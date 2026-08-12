@@ -1562,7 +1562,649 @@
 
 
     </main>
+<!-- =========================================================
+     GITHUB REPOSITORY WIDGET
+     ========================================================= -->
 
+<section id="github">
+
+    <div class="container">
+
+        <div class="section-label-row">
+
+            <div class="line"></div>
+
+            <span class="section-label">
+                03 · Open Source
+            </span>
+
+            <div class="line"></div>
+
+        </div>
+
+
+        <div class="section-intro">
+
+            <h2 class="section-title">
+                GitHub
+            </h2>
+
+            <p class="section-description">
+                Code, projects, and things I'm currently building.
+            </p>
+
+        </div>
+
+
+        <a
+            class="github-widget"
+            href="https://github.com/megamann81/message-to-mega"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+
+            <div class="github-widget-top">
+
+
+                <!-- GitHub Icon -->
+
+                <div class="github-icon">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                    >
+
+                        <path
+                            fill="currentColor"
+                            d="M12 .297c-6.63 0-12 5.373-12 12
+                            0 5.303 3.438 9.8 8.205 11.385
+                            .6.113.82-.258.82-.577
+                            0-.285-.01-1.04-.015-2.04
+                            -3.338.724-4.042-1.61-4.042-1.61
+                            -.546-1.387-1.333-1.756-1.333-1.756
+                            -1.089-.745.084-.729.084-.729
+                            1.205.084 1.839 1.237 1.839 1.237
+                            1.07 1.834 2.807 1.304 3.492.997
+                            .108-.775.418-1.304.762-1.604
+                            -2.665-.3-5.466-1.332-5.466-5.93
+                            0-1.31.465-2.38 1.235-3.22
+                            -.135-.303-.54-1.523.105-3.176
+                            0 0 1.005-.322 3.3 1.23
+                            .96-.267 1.98-.399 3-.405
+                            1.02.006 2.04.138 3 .405
+                            2.28-1.552 3.285-1.23 3.285-1.23
+                            .645 1.653.24 2.873.12 3.176
+                            .765.84 1.23 1.91 1.23 3.22
+                            0 4.61-2.805 5.625-5.475 5.922
+                            .435.372.81 1.102.81 2.222
+                            0 1.606-.015 2.896-.015 3.286
+                            0 .315.21.69.825.57
+                            C20.565 22.092 24 17.592 24 12.297
+                            c0-6.624-5.373-12-12-12"
+                        />
+
+                    </svg>
+
+                </div>
+
+
+                <!-- Repository -->
+
+                <div class="github-repo-info">
+
+                    <div class="github-repo-name">
+                        message-to-mega
+                    </div>
+
+                    <div class="github-repo-owner">
+                        @megamann81
+                    </div>
+
+                </div>
+
+
+                <div class="github-open">
+                    View →
+                </div>
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div class="github-description">
+                The source code behind my visitor registry,
+                messages, and web projects.
+            </div>
+
+
+            <!-- Repository information -->
+
+            <div class="github-stats">
+
+                <span class="github-stat">
+
+                    <span class="github-dot"></span>
+
+                    Public Repository
+
+                </span>
+
+
+                <span class="github-separator">
+                    ·
+                </span>
+
+
+                <span class="github-stat">
+                    GitHub
+                </span>
+
+            </div>
+
+
+            <!-- Easy-to-see repository button -->
+
+            <div class="github-view-repository">
+                View the Repository →
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     GITHUB WIDGET CSS
+     ========================================================= -->
+
+<style>
+
+.github-widget {
+
+    display: block;
+
+    position: relative;
+
+    padding: 28px;
+
+    border:
+        2px solid
+        var(--foreground);
+
+    background:
+        var(--surface);
+
+    color:
+        var(--foreground);
+
+    text-decoration:
+        none;
+
+    opacity:
+        0;
+
+    transform:
+        translateY(20px);
+
+    transition:
+        opacity .8s
+        cubic-bezier(.16,1,.3,1) .35s,
+
+        transform .8s
+        cubic-bezier(.16,1,.3,1) .35s,
+
+        background .3s ease,
+
+        box-shadow .3s ease;
+}
+
+
+section.visible .github-widget {
+
+    opacity:
+        1;
+
+    transform:
+        translateY(0);
+}
+
+
+.github-widget:hover {
+
+    background:
+        #fffdfa;
+
+    transform:
+        translate(-3px, -3px);
+
+    box-shadow:
+        6px
+        6px
+        0
+        var(--border);
+}
+
+
+.github-widget::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    width:
+        0;
+
+    height:
+        2px;
+
+    background:
+        var(--foreground);
+
+    transition:
+        width .5s
+        cubic-bezier(.16,1,.3,1);
+}
+
+
+.github-widget:hover::before {
+
+    width:
+        100%;
+}
+
+
+/* ---------------------------------------------------------
+   Top row
+   --------------------------------------------------------- */
+
+.github-widget-top {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        17px;
+}
+
+
+.github-icon {
+
+    width:
+        42px;
+
+    height:
+        42px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+    border:
+        1px solid
+        var(--foreground);
+
+    background:
+        var(--background);
+
+    transition:
+        transform .35s
+        cubic-bezier(.16,1,.3,1),
+
+        background .25s ease;
+}
+
+
+.github-icon svg {
+
+    width:
+        21px;
+
+    height:
+        21px;
+}
+
+
+.github-widget:hover
+.github-icon {
+
+    transform:
+        rotate(-8deg)
+        scale(1.08);
+
+    background:
+        var(--surface);
+}
+
+
+.github-repo-info {
+
+    min-width:
+        0;
+
+    flex:
+        1;
+}
+
+
+.github-repo-name {
+
+    font-family:
+        var(--serif);
+
+    font-size:
+        21px;
+
+    font-weight:
+        700;
+
+    line-height:
+        1.2;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+}
+
+
+.github-repo-owner {
+
+    margin-top:
+        4px;
+
+    font-family:
+        var(--mono);
+
+    font-size:
+        10px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .12em;
+
+    color:
+        var(--muted);
+}
+
+
+.github-open {
+
+    font-size:
+        10px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .18em;
+
+    color:
+        var(--muted);
+
+    transition:
+        transform .3s ease,
+        color .3s ease;
+}
+
+
+.github-widget:hover
+.github-open {
+
+    color:
+        var(--foreground);
+
+    transform:
+        translateX(4px);
+}
+
+
+/* ---------------------------------------------------------
+   Description
+   --------------------------------------------------------- */
+
+.github-description {
+
+    margin-top:
+        24px;
+
+    padding-top:
+        20px;
+
+    border-top:
+        1px solid
+        var(--border);
+
+    font-family:
+        var(--serif);
+
+    font-size:
+        14px;
+
+    line-height:
+        1.7;
+
+    font-style:
+        italic;
+
+    color:
+        var(--muted);
+}
+
+
+/* ---------------------------------------------------------
+   Stats
+   --------------------------------------------------------- */
+
+.github-stats {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    margin-top:
+        20px;
+
+    font-size:
+        10px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .17em;
+
+    color:
+        var(--muted);
+}
+
+
+.github-stat {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+}
+
+
+.github-dot {
+
+    width:
+        6px;
+
+    height:
+        6px;
+
+    border:
+        1px solid
+        var(--foreground);
+
+    border-radius:
+        50%;
+}
+
+
+.github-separator {
+
+    color:
+        var(--muted-light);
+}
+
+
+/* ---------------------------------------------------------
+   View repository button
+   --------------------------------------------------------- */
+
+.github-view-repository {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    margin-top:
+        24px;
+
+    padding:
+        11px 16px;
+
+    border:
+        1px solid
+        var(--foreground);
+
+    background:
+        var(--foreground);
+
+    color:
+        var(--background);
+
+    font-family:
+        var(--sans);
+
+    font-size:
+        10px;
+
+    font-weight:
+        600;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .18em;
+
+    transition:
+        transform .25s
+        cubic-bezier(.16,1,.3,1),
+
+        box-shadow .25s
+        cubic-bezier(.16,1,.3,1),
+
+        background .25s ease;
+}
+
+
+.github-widget:hover
+.github-view-repository {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        3px
+        3px
+        0
+        var(--muted);
+}
+
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .github-widget {
+
+        padding:
+            22px;
+
+    }
+
+
+    .github-widget-top {
+
+        gap:
+            12px;
+
+    }
+
+
+    .github-open {
+
+        display:
+            none;
+
+    }
+
+
+    .github-repo-name {
+
+        font-size:
+            18px;
+
+    }
+
+
+    .github-stats {
+
+        flex-wrap:
+            wrap;
+
+    }
+
+}
+
+</style>
 
     <!-- =========================================================
          FOOTER
