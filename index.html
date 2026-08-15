@@ -20,6 +20,9 @@
             subtitle:
                 "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯. Pls say something nice ( ͠0 ͟ʖ ͡0)",
 
+            subtitleNote:
+                "Btw I didn't use a website editor for this, you can see all of the html in the git repository linked at the bottom of this page for proof, even though I did use ai for troubleshooting. I still own all of the rights though.",
+
             formHeading:
                 "Leave a Message",
 
@@ -30,7 +33,7 @@
                 "Recent Visitors",
 
             visitorsDescription:
-                "Btw I didn't use a website editor for this, you can see all of the html in the git repository linked at the bottom of this page for proof, even though I did use ai for troubleshooting. I still own all of the rights though.",
+                "See other people's messages here",
 
             footerName:
                 "Megamann 81 made this thingy",
@@ -450,6 +453,202 @@ const SUPABASE_ANON_KEY =
 
 
         /* =========================================================
+           HEADER NOTE
+           ========================================================= */
+
+        .site-subtitle-note {
+            width:
+                min(
+                    calc(100% - 32px),
+                    760px
+                );
+
+            margin:
+                16px auto 0;
+
+            padding:
+                15px 24px;
+
+            font-family:
+                var(--sans);
+
+            font-size:
+                14px;
+
+            line-height:
+                1.7;
+
+            font-style:
+                normal;
+
+            color:
+                var(--foreground);
+
+            background:
+                rgba(250,249,246,.7);
+
+            border:
+                1px solid var(--border);
+
+            box-shadow:
+                3px 3px 0 rgba(115,115,115,.18);
+
+            animation:
+                floatIn
+                .8s
+                ease
+                .7s
+                both;
+        }
+
+
+        /* =========================================================
+           HEADER JUMP BUTTON
+           ========================================================= */
+
+        .header-jump-wrapper {
+            display:
+                flex;
+
+            justify-content:
+                center;
+
+            margin-top:
+                18px;
+
+            margin-bottom:
+                0;
+        }
+
+        .header-jump-button {
+            display:
+                inline-flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            padding:
+                11px 18px;
+
+            border:
+                1px solid var(--foreground);
+
+            background:
+                transparent;
+
+            color:
+                var(--foreground);
+
+            font-family:
+                var(--sans);
+
+            font-size:
+                10px;
+
+            font-weight:
+                600;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .18em;
+
+            text-decoration:
+                none;
+
+            transition:
+                transform .25s
+                cubic-bezier(.16,1,.3,1),
+
+                background .25s ease,
+
+                color .25s ease,
+
+                box-shadow .25s
+                cubic-bezier(.16,1,.3,1);
+        }
+
+        .header-jump-button:hover {
+            background:
+                var(--foreground);
+
+            color:
+                var(--background);
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                5px 5px 0 var(--muted);
+        }
+
+        .header-jump-button:active {
+            transform:
+                translateY(1px);
+
+            box-shadow:
+                1px 1px 0 var(--muted);
+        }
+
+
+        /* =========================================================
+           JUMP HIGHLIGHT
+           ========================================================= */
+
+        .jump-highlight {
+            position:
+                relative;
+
+            box-shadow:
+                0 0 0 1px
+                rgba(23,23,23,.35);
+        }
+
+        .jump-highlight::after {
+            content:
+                "";
+
+            position:
+                absolute;
+
+            inset:
+                0;
+
+            pointer-events:
+                none;
+
+            border:
+                1px solid
+                var(--foreground);
+
+            opacity:
+                0;
+
+            animation:
+                jumpPulse
+                .8s
+                ease-out
+                both;
+        }
+
+        @keyframes jumpPulse {
+            0% {
+                opacity:
+                    .5;
+            }
+
+            100% {
+                opacity:
+                    0;
+            }
+        }
+
+
+        /* =========================================================
            SECTIONS
            ========================================================= */
 
@@ -579,6 +778,26 @@ const SUPABASE_ANON_KEY =
         .section-description {
             opacity: 1;
             transform: translateY(0);
+        }
+
+
+        /* =========================================================
+           TIGHTER SEND A MESSAGE SPACING
+           ========================================================= */
+
+        #sign {
+            padding-top:
+                24px;
+        }
+
+        #sign .section-label-row {
+            margin-bottom:
+                14px;
+        }
+
+        #sign .section-intro {
+            margin-bottom:
+                14px;
         }
 
 
@@ -901,6 +1120,96 @@ const SUPABASE_ANON_KEY =
                 2px solid var(--foreground);
 
             overflow: hidden;
+        }
+
+        /* =========================================================
+           MESSAGE TO MEGA CORNER MARK
+           ========================================================= */
+
+        .message-to-mega-mark {
+            display:
+                flex;
+
+            align-items:
+                center;
+
+            justify-content:
+                center;
+
+            gap:
+                9px;
+
+            width:
+                fit-content;
+
+            margin:
+                0 0 18px auto;
+
+            padding:
+                8px 12px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                var(--surface);
+
+            color:
+                var(--muted);
+
+            font-family:
+                var(--mono);
+
+            font-size:
+                9px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing:
+                .14em;
+
+            transform:
+                rotate(-1.5deg);
+
+            box-shadow:
+                3px 3px 0 rgba(115,115,115,.12);
+
+            transition:
+                transform .3s
+                cubic-bezier(.16,1,.3,1),
+
+                color .25s ease,
+
+                border-color .25s ease,
+
+                box-shadow .3s ease;
+        }
+
+        .message-to-mega-mark:hover {
+            transform:
+                translateY(-2px)
+                rotate(0deg);
+
+            color:
+                var(--foreground);
+
+            border-color:
+                var(--foreground);
+
+            box-shadow:
+                4px 4px 0 var(--border);
+        }
+
+        .message-to-mega-mark-dot {
+            font-size:
+                7px;
+
+            color:
+                var(--foreground);
+
+            transform:
+                rotate(45deg);
         }
 
         .visitor-entry {
@@ -1640,21 +1949,183 @@ const SUPABASE_ANON_KEY =
 
             .container {
                 width:
-                    min(
-                        calc(100% - 24px),
-                        var(--max-width)
-                    );
+                    calc(100% - 20px);
             }
 
             header {
-                padding-top:
+                padding:
+                    28px 0 18px;
+            }
+
+            .header-rule {
+                margin-bottom:
                     30px;
+            }
+
+            .site-title {
+                font-size:
+                    clamp(36px, 13vw, 58px);
+
+                line-height:
+                    1;
+            }
+
+            .site-subtitle {
+                width:
+                    calc(100% - 8px);
+
+                margin-top:
+                    15px;
+
+                font-size:
+                    14px;
+
+                line-height:
+                    1.6;
+            }
+
+            .site-subtitle-note {
+                width:
+                    100%;
+
+                margin-top:
+                    14px;
+
+                padding:
+                    13px 15px;
+
+                font-size:
+                    12px;
+
+                line-height:
+                    1.6;
+            }
+
+            .header-jump-wrapper {
+                margin-top:
+                    16px;
+            }
+
+            .header-jump-button {
+                width:
+                    100%;
+
+                max-width:
+                    280px;
+
+                padding:
+                    12px 16px;
             }
 
             section {
                 padding:
-                    45px
-                    0;
+                    38px 0;
+            }
+
+            #sign {
+                padding-top:
+                    18px;
+            }
+
+            #sign .section-label-row {
+                margin-bottom:
+                    12px;
+            }
+
+            #sign .section-intro {
+                margin-bottom:
+                    12px;
+            }
+
+            .section-label-row {
+                gap:
+                    8px;
+
+                margin-bottom:
+                    20px;
+            }
+
+            .section-label {
+                font-size:
+                    7px;
+
+                letter-spacing:
+                    .16em;
+            }
+
+            .section-title {
+                font-size:
+                    clamp(30px, 10vw, 42px);
+            }
+
+            .section-description {
+                font-size:
+                    14px;
+
+                line-height:
+                    1.6;
+            }
+
+            .visitor-form {
+                padding:
+                    20px 16px;
+            }
+
+            .form-grid {
+                gap:
+                    18px;
+            }
+
+            .field-textarea {
+                min-height:
+                    135px;
+            }
+
+            .form-footer {
+                flex-direction:
+                    column;
+
+                align-items:
+                    stretch;
+
+                gap:
+                    15px;
+
+                margin-top:
+                    20px;
+
+                padding-top:
+                    18px;
+            }
+
+            .form-note {
+                font-size:
+                    12px;
+
+                line-height:
+                    1.55;
+            }
+
+            .submit-button {
+                width:
+                    100%;
+
+                padding:
+                    14px 18px;
+            }
+
+            .message-to-mega-mark {
+                margin:
+                    0 0 14px auto;
+
+                padding:
+                    7px 10px;
+
+                font-size:
+                    8px;
+
+                letter-spacing:
+                    .1em;
             }
 
             .visitor-grid {
@@ -1663,53 +2134,53 @@ const SUPABASE_ANON_KEY =
             }
 
             .visitor-entry {
+                min-height:
+                    0;
+
+                padding:
+                    21px 18px;
+
                 border-right:
                     0 !important;
-
-                border-bottom:
-                    1px solid
-                    var(--foreground);
             }
 
-            .visitor-entry:last-child {
-                border-bottom:
-                    0;
-            }
-
-            .form-footer {
-                align-items:
-                    stretch;
-
-                flex-direction:
-                    column;
-            }
-
-            .submit-button {
-                width:
-                    100%;
-            }
-
-            .section-label-row {
-                gap:
-                    10px;
-            }
-
-            .section-label {
+            .visitor-name {
                 font-size:
-                    8px;
+                    19px;
+            }
 
-                letter-spacing:
-                    .2em;
+            .visitor-message {
+                font-size:
+                    13px;
+
+                line-height:
+                    1.65;
             }
 
             .github-widget {
                 padding:
-                    22px;
+                    20px 17px;
             }
 
             .github-widget-top {
                 gap:
-                    12px;
+                    11px;
+            }
+
+            .github-icon {
+                width:
+                    38px;
+
+                height:
+                    38px;
+            }
+
+            .github-icon svg {
+                width:
+                    19px;
+
+                height:
+                    19px;
             }
 
             .github-open {
@@ -1719,12 +2190,60 @@ const SUPABASE_ANON_KEY =
 
             .github-repo-name {
                 font-size:
-                    18px;
+                    17px;
+            }
+
+            .github-description {
+                margin-top:
+                    19px;
+
+                padding-top:
+                    16px;
+
+                font-size:
+                    13px;
             }
 
             .github-stats {
                 flex-wrap:
                     wrap;
+
+                gap:
+                    7px;
+
+                margin-top:
+                    16px;
+            }
+
+            .github-view-repository {
+                width:
+                    100%;
+
+                justify-content:
+                    center;
+
+                margin-top:
+                    19px;
+            }
+
+            footer {
+                padding:
+                    42px
+                    0
+                    35px;
+            }
+
+            .footer-brand {
+                font-size:
+                    19px;
+            }
+
+            .footer-meta {
+                font-size:
+                    9px;
+
+                letter-spacing:
+                    .22em;
             }
         }
 
@@ -1804,6 +2323,24 @@ const SUPABASE_ANON_KEY =
                     class="site-subtitle"
                     id="siteSubtitle"
                 ></p>
+
+
+                <div
+                    class="site-subtitle-note"
+                    id="siteSubtitleNote"
+                ></div>
+
+
+                <div class="header-jump-wrapper">
+
+                    <a
+                        class="header-jump-button"
+                        href="#sign"
+                    >
+                        Leave a Message ↓
+                    </a>
+
+                </div>
 
             </div>
 
@@ -2017,6 +2554,23 @@ const SUPABASE_ANON_KEY =
                     ></p>
 
                 </div>
+
+
+        <!-- =================================================
+             MESSAGE TO MEGA CORNER MARK
+             ================================================= -->
+
+        <div class="message-to-mega-mark">
+
+            <span>
+                Message to Mega
+            </span>
+
+            <span class="message-to-mega-mark-dot">
+                ◆
+            </span>
+
+        </div>
 
 
                 <div
@@ -2251,6 +2805,7 @@ const SUPABASE_ANON_KEY =
 
     <script>
 
+
         /* =========================================================
            CHECK SUPABASE
            ========================================================= */
@@ -2302,6 +2857,14 @@ const SUPABASE_ANON_KEY =
             )
             .textContent =
                 SITE.subtitle;
+
+
+        document
+            .getElementById(
+                "siteSubtitleNote"
+            )
+            .textContent =
+                SITE.subtitleNote;
 
 
         document
@@ -3493,8 +4056,6 @@ const SUPABASE_ANON_KEY =
                 }
 
 
-                updateMessageCharacterCount();
-
             }
             catch (error) {
 
@@ -3506,10 +4067,10 @@ const SUPABASE_ANON_KEY =
 
                 backendMaxMessageLength =
                     1000;
-
-
-                updateMessageCharacterCount();
             }
+
+
+            updateMessageCharacterCount();
         }
 
 
@@ -3881,6 +4442,74 @@ const SUPABASE_ANON_KEY =
                 );
             }
         );
+
+
+        /* =========================================================
+           CINEMATIC HEADER JUMP
+           ========================================================= */
+
+        const headerJumpButton =
+            document.querySelector(
+                ".header-jump-button"
+            );
+
+
+        if (headerJumpButton) {
+
+            headerJumpButton.addEventListener(
+                "click",
+                function(event) {
+
+                    event.preventDefault();
+
+
+                    const target =
+                        document.getElementById(
+                            "sign"
+                        );
+
+
+                    if (!target) {
+                        return;
+                    }
+
+
+                    target.scrollIntoView({
+                        behavior:
+                            "smooth",
+
+                        block:
+                            "start"
+                    });
+
+
+                    setTimeout(
+                        () => {
+
+                            target.classList.add(
+                                "jump-highlight"
+                            );
+
+
+                            setTimeout(
+                                () => {
+
+                                    target.classList.remove(
+                                        "jump-highlight"
+                                    );
+
+                                },
+                                800
+                            );
+
+                        },
+                        450
+                    );
+
+                }
+            );
+
+        }
 
 
         /* =========================================================
