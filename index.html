@@ -699,6 +699,50 @@ const SUPABASE_ANON_KEY =
                 translate(-1px, -1px);
         }
 
+        /* =========================================================
+           CHARACTER COUNT
+           ========================================================= */
+
+        .character-counter {
+            margin-top:
+                7px;
+
+            text-align:
+                right;
+
+            font-family:
+                var(--mono);
+
+            font-size:
+                10px;
+
+            letter-spacing:
+                .08em;
+
+            color:
+                var(--muted);
+
+            transition:
+                color .2s ease,
+                transform .2s ease;
+        }
+
+        .character-counter.warning {
+            color:
+                var(--foreground);
+
+            transform:
+                translateX(-2px);
+        }
+
+        .character-counter.limit {
+            color:
+                var(--foreground);
+
+            font-weight:
+                700;
+        }
+
         .form-footer {
             display: flex;
 
@@ -1864,10 +1908,31 @@ const SUPABASE_ANON_KEY =
                                     class="field-textarea"
                                     id="visitorMessage"
                                     name="message"
-                                    maxlength="1000"
                                     placeholder="Leave a message..."
                                     required
                                 ></textarea>
+
+
+                                <!-- =================================================
+                                     BACKEND-CONTROLLED CHARACTER COUNTER
+                                     ================================================= -->
+
+                                <div
+                                    class="character-counter"
+                                    aria-live="polite"
+                                >
+
+                                    <span
+                                        id="messageCharacterCount"
+                                    >0</span>
+
+                                    /
+
+                                    <span
+                                        id="messageCharacterLimit"
+                                    >...</span>
+
+                                </div>
 
                             </div>
 
@@ -2186,7 +2251,6 @@ const SUPABASE_ANON_KEY =
 
     <script>
 
-
         /* =========================================================
            CHECK SUPABASE
            ========================================================= */
@@ -2494,7 +2558,9 @@ const SUPABASE_ANON_KEY =
             ) {
 
                 const normalized =
-                    makeSearchable(phrase);
+                    makeSearchable(
+                        phrase
+                    );
 
                 if (
                     searchable.includes(
@@ -2531,10 +2597,14 @@ const SUPABASE_ANON_KEY =
                 `${name} ${message}`;
 
             const searchable =
-                makeSearchable(combined);
+                makeSearchable(
+                    combined
+                );
 
             const compact =
-                makeCompactSearchable(combined);
+                makeCompactSearchable(
+                    combined
+                );
 
             const reasons = [];
 
@@ -2549,7 +2619,8 @@ const SUPABASE_ANON_KEY =
             ) {
 
                 return {
-                    action: "reject",
+                    action:
+                        "reject",
 
                     reasons: [
                         "Unsafe HTML or script pattern detected."
@@ -2991,6 +3062,7 @@ const SUPABASE_ANON_KEY =
                             "0";
                     }
 
+
                     if (
                         index >=
                         entries.length - 2
@@ -3188,6 +3260,7 @@ const SUPABASE_ANON_KEY =
                     )
                     .forEach(
                         entry => {
+
                             entry.classList.add(
                                 "visible"
                             );
@@ -3293,6 +3366,158 @@ const SUPABASE_ANON_KEY =
             );
 
 
+        /* =========================================================
+           BACKEND-CONTROLLED MESSAGE LIMIT
+           ========================================================= */
+
+        const visitorMessage =
+            document.getElementById(
+                "visitorMessage"
+            );
+
+
+        const messageCharacterCount =
+            document.getElementById(
+                "messageCharacterCount"
+            );
+
+
+        const messageCharacterLimit =
+            document.getElementById(
+                "messageCharacterLimit"
+            );
+
+
+        let backendMaxMessageLength =
+            1000;
+
+
+        function updateMessageCharacterCount() {
+
+            const length =
+                visitorMessage.value.length;
+
+
+            messageCharacterCount.textContent =
+                length;
+
+
+            messageCharacterLimit.textContent =
+                backendMaxMessageLength;
+
+
+            visitorMessage.maxLength =
+                backendMaxMessageLength;
+
+
+            const counter =
+                messageCharacterCount.parentElement;
+
+
+            counter.classList.remove(
+                "warning",
+                "limit"
+            );
+
+
+            if (
+                length >=
+                backendMaxMessageLength
+            ) {
+
+                counter.classList.add(
+                    "limit"
+                );
+
+            }
+            else if (
+                length >=
+                backendMaxMessageLength * 0.9
+            ) {
+
+                counter.classList.add(
+                    "warning"
+                );
+            }
+        }
+
+
+        visitorMessage.addEventListener(
+            "input",
+            updateMessageCharacterCount
+        );
+
+
+        async function loadBackendLimits() {
+
+            try {
+
+                const response =
+                    await fetch(
+                        `${SUPABASE_URL}/functions/v1/moderation-function`,
+                        {
+                            method:
+                                "GET",
+
+                            headers: {
+                                "apikey":
+                                    SUPABASE_ANON_KEY
+                            }
+                        }
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Could not load message limits."
+                    );
+                }
+
+
+                const limits =
+                    await response.json();
+
+
+                if (
+                    Number.isFinite(
+                        limits.maxMessageLength
+                    ) &&
+                    limits.maxMessageLength > 0
+                ) {
+
+                    backendMaxMessageLength =
+                        Number(
+                            limits.maxMessageLength
+                        );
+                }
+
+
+                updateMessageCharacterCount();
+
+            }
+            catch (error) {
+
+                console.debug(
+                    "Could not load backend limits:",
+                    error
+                );
+
+
+                backendMaxMessageLength =
+                    1000;
+
+
+                updateMessageCharacterCount();
+            }
+        }
+
+
+        loadBackendLimits();
+
+        updateMessageCharacterCount();
+
+
         let formOpened =
             false;
 
@@ -3343,30 +3568,45 @@ const SUPABASE_ANON_KEY =
                         .trim();
 
 
-                if (!name || !message) {
+                if (!name) {
 
                     showStatus(
-                        "Please enter your name and a message."
+                        "Please enter your name."
                     );
 
                     return;
                 }
 
 
-                if (name.length > 80) {
+                if (!message) {
 
                     showStatus(
-                        "Your name is too long."
+                        "Please enter a message."
                     );
 
                     return;
                 }
 
 
-                if (message.length > 1000) {
+                if (
+                    name.length > 80
+                ) {
 
                     showStatus(
-                        "Your message is too long."
+                        "Your name is too long. The maximum is 80 characters."
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    message.length >
+                    backendMaxMessageLength
+                ) {
+
+                    showStatus(
+                        `Your message is too long. The maximum is ${backendMaxMessageLength} characters.`
                     );
 
                     return;
@@ -3399,9 +3639,12 @@ const SUPABASE_ANON_KEY =
                         "submission_rejected"
                     );
 
+
                     showStatus(
+                        moderation.reasons[0] ||
                         "Your message could not be submitted."
                     );
+
 
                     return;
                 }
@@ -3447,10 +3690,7 @@ const SUPABASE_ANON_KEY =
                                         "application/json",
 
                                     "apikey":
-                                        SUPABASE_ANON_KEY,
-
-                                    "Authorization":
-                                        `Bearer ${SUPABASE_ANON_KEY}`
+                                        SUPABASE_ANON_KEY
                                 },
 
                                 body:
@@ -3490,6 +3730,8 @@ const SUPABASE_ANON_KEY =
 
 
                     visitorForm.reset();
+
+                    updateMessageCharacterCount();
 
 
                     trackEvent(
@@ -3533,7 +3775,7 @@ const SUPABASE_ANON_KEY =
 
                     showStatus(
                         error.message ||
-                        "Something went wrong."
+                        "Something went wrong while sending your message."
                     );
 
                 }
@@ -3560,21 +3802,28 @@ const SUPABASE_ANON_KEY =
             formStatus.textContent =
                 message;
 
+
             formStatus.classList.add(
                 "visible"
             );
 
 
-            setTimeout(
-                () => {
-
-                    formStatus.classList.remove(
-                        "visible"
-                    );
-
-                },
-                5000
+            clearTimeout(
+                window.visitorStatusTimeout
             );
+
+
+            window.visitorStatusTimeout =
+                setTimeout(
+                    () => {
+
+                        formStatus.classList.remove(
+                            "visible"
+                        );
+
+                    },
+                    7000
+                );
         }
 
 
