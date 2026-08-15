@@ -9,16 +9,9 @@
     <!-- =========================================================
          EDITABLE SETTINGS
          ========================================================= -->
-
-    <!-- Favicon, change the source here (-mega) -->
-    <link
-        rel="icon"
-        type="image/png"
-        href="022c410b22d158fcb7cb4bdee966aa18.jpg"
-    >
-    <!-- End of favicon -->
-
-
+<!-- Favicon, change the source here (-mega) -->
+<link rel="icon" type="image/png" href="022c410b22d158fcb7cb4bdee966aa18.jpg">
+ <!-- End of favicon -->   
     <script>
         const SITE = {
             title: "Visitor Log",
@@ -1131,11 +1124,14 @@
            ========================================================= */
 
         .github-widget {
-            display: block;
+            display:
+                block;
 
-            position: relative;
+            position:
+                relative;
 
-            padding: 28px;
+            padding:
+                28px;
 
             border:
                 2px solid
@@ -2190,6 +2186,7 @@
 
     <script>
 
+
         /* =========================================================
            CHECK SUPABASE
            ========================================================= */
@@ -2541,7 +2538,8 @@
 
             const reasons = [];
 
-            let action = "allow";
+            let action =
+                "allow";
 
 
             if (
@@ -2573,7 +2571,8 @@
                     `Blocked term detected: ${blockedTerm}`
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2587,12 +2586,15 @@
                     "Excessive repeated characters."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
             const urlCount =
-                countUrls(combined);
+                countUrls(
+                    combined
+                );
 
 
             if (
@@ -2604,7 +2606,8 @@
                     `${urlCount} link(s) detected.`
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2616,31 +2619,38 @@
                     "Too many links."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
             if (
-                containsEmail(combined)
+                containsEmail(
+                    combined
+                )
             ) {
 
                 reasons.push(
                     "Email address detected."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
             if (
-                containsPhoneNumber(combined)
+                containsPhoneNumber(
+                    combined
+                )
             ) {
 
                 reasons.push(
                     "Possible phone number detected."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2656,7 +2666,8 @@
                     `Promotional phrase detected: ${spamPhrase}`
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2675,7 +2686,8 @@
                     "Excessive punctuation."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2689,7 +2701,8 @@
                     "Suspicious unbroken text detected."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2710,7 +2723,8 @@
                     "Highly repetitive message."
                 );
 
-                action = "reject";
+                action =
+                    "reject";
             }
 
 
@@ -2977,7 +2991,6 @@
                             "0";
                     }
 
-
                     if (
                         index >=
                         entries.length - 2
@@ -3083,7 +3096,6 @@
                                                         pinned-label
                                                     "
                                                 >
-
                                                     <span
                                                         class="
                                                             pin-icon
@@ -3093,9 +3105,8 @@
                                                     </span>
 
                                                     Pinned
-
                                                 </div>
-                                            `
+                                              `
                                             : ""
                                     }
 
@@ -3218,7 +3229,6 @@
 
                     sessionId =
                         crypto.randomUUID();
-
 
                     localStorage.setItem(
                         sessionKey,
@@ -3406,45 +3416,75 @@
 
                 try {
 
-                    const {
-                        error
-                    } = await db
+                    /* =================================================
+                       MODERATION FUNCTION
+                       =================================================
 
-                        .from(
-                            "messages"
-                        )
+                       The browser sends the message to the Supabase
+                       Edge Function instead of inserting directly
+                       into the messages table.
 
-                        .insert({
-                            name:
-                                name,
+                       The Edge Function handles:
+                       - IP hashing
+                       - Message count limits
+                       - Cooldown
+                       - Server-side moderation
+                       - Message insertion
 
-                            message:
-                                message,
+                       This function must exist in the SAME
+                       Supabase project as SUPABASE_URL.
+                       ================================================= */
 
-                            status:
-                                "approved",
+                    const response =
+                        await fetch(
+                            `${SUPABASE_URL}/functions/v1/moderation-function`,
+                            {
+                                method:
+                                    "POST",
 
-                            moderation_reason:
-                                moderation
-                                    .reasons
-                                    .length
-                                    ? moderation
-                                        .reasons
-                                        .join(
-                                            " "
-                                        )
-                                    : null
-                        });
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
 
+                                    "apikey":
+                                        SUPABASE_ANON_KEY,
 
-                    if (error) {
+                                    "Authorization":
+                                        `Bearer ${SUPABASE_ANON_KEY}`
+                                },
 
-                        console.error(
-                            error
+                                body:
+                                    JSON.stringify({
+                                        name:
+                                            name,
+
+                                        message:
+                                            message
+                                    })
+                            }
                         );
 
+
+                    let result = {};
+
+
+                    try {
+
+                        result =
+                            await response.json();
+
+                    }
+                    catch {
+
+                        result = {};
+                    }
+
+
+                    if (!response.ok) {
+
                         throw new Error(
-                            "The message could not be submitted."
+                            result.error ||
+                            "The message could not be accepted."
                         );
                     }
 
@@ -3486,8 +3526,10 @@
                 catch (error) {
 
                     console.error(
+                        "Message submission error:",
                         error
                     );
+
 
                     showStatus(
                         error.message ||
@@ -3517,7 +3559,6 @@
 
             formStatus.textContent =
                 message;
-
 
             formStatus.classList.add(
                 "visible"
@@ -3565,7 +3606,6 @@
                                         "visible"
                                     );
 
-
                                 observer.unobserve(
                                     entry.target
                                 );
@@ -3611,7 +3651,6 @@
         trackEvent(
             "page_view"
         );
-
 
         renderVisitors();
 
