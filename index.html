@@ -16,7 +16,7 @@
         const SITE = {
     title: "Visitor Log",
     name: "Megamann 81",
-    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯ pls say something nice ( ͠0 ͟ʖ ͡0)",
+    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯",
 
     subtitleNote:
         "Btw I didn't use a website editor for this, you can see all of the html in the git repository linked at the bottom of this page for proof, even though I did use ai for troubleshooting. I still own all of the rights though.",
@@ -2252,7 +2252,22 @@ const SUPABASE_ANON_KEY =
         .message-click-wrap {
             position: fixed;
 
-            right: 0;
+            /*
+             * Center the heart itself on the horizontal midpoint of
+             * the open margin between the main content boundary and
+             * the browser side/scrollbar bumper.
+             */
+            right:
+                max(
+                    0px,
+                    calc(
+                        (100vw - min(
+                            calc(100vw - 32px),
+                            var(--max-width)
+                        )) / 4 - 22px
+                    )
+                );
+
             top: var(--message-scroll-thumb-center, 50vh);
 
             z-index: 9999;
@@ -2344,28 +2359,45 @@ const SUPABASE_ANON_KEY =
 
         .message-reaction-card {
             position: absolute;
-            right: 0;
-            bottom: calc(100% + 8px);
+
+            /*
+             * Place the popup to the left of the heart by default so it
+             * opens into the available page margin without covering the
+             * scrollbar or drifting into the main content.
+             * JavaScript flips it to the right only when the left side
+             * does not have enough room.
+             */
+            right:
+                calc(100% + 10px);
+
+            left:
+                auto;
+
+            bottom: calc(100% + 10px);
+
+            left: 50%;
+            right: auto;
+            transform: translateX(-50%) translateY(8px) scale(.94);
 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
 
-            min-width: 112px;
-            padding: 9px 12px 11px;
+            min-width: 142px;
+            padding: 11px 15px 13px;
 
             border: 1px solid var(--border);
-            background: rgba(250,249,246,.74);
+            background: rgba(250,249,246,.84);
 
             box-shadow:
-                3px 3px 0 rgba(115,115,115,.12);
+                4px 4px 0 rgba(115,115,115,.12);
 
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(6px);
 
             opacity: 0;
             transform: translateY(8px) scale(.94);
-            transform-origin: bottom right;
+            transform-origin: bottom center;
             pointer-events: none;
 
             transition:
@@ -2373,30 +2405,60 @@ const SUPABASE_ANON_KEY =
                 transform .28s cubic-bezier(.16,1,.3,1);
         }
 
-        .message-click-wrap.reacted .message-reaction-card {
-            opacity: 1;
+        .message-click-wrap.popup-right .message-reaction-card {
+            left: calc(100% + 10px);
+            right: auto;
+            transform-origin: center bottom;
+        }
+
+        /* =========================================================
+           POPUP VERTICAL FALLBACK
+           ========================================================= */
+
+        .message-click-wrap.popup-below .message-reaction-card {
+            top: calc(100% + 10px);
+            bottom: auto;
+            transform-origin: center top;
+        }
+
+        .message-click-wrap.popup-below.reacted .message-reaction-card {
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
+        .message-click-wrap.popup-below.popup-right .message-reaction-card {
+            transform: translateY(8px) scale(.94);
+        }
+
+        .message-click-wrap.popup-below.popup-right.reacted .message-reaction-card {
             transform: translateY(0) scale(1);
         }
 
+        .message-click-wrap.reacted .message-reaction-card {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0) scale(1);
+        }
+
         .message-total-label {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
 
             font-family: var(--mono);
-            font-size: 7px;
-            line-height: 1;
+            font-size: 8px;
+            line-height: 1.1;
             text-transform: uppercase;
-            letter-spacing: .15em;
+            letter-spacing: .16em;
+            font-weight: 600;
 
-            color: var(--muted);
+            color: var(--foreground);
         }
 
         .message-total-clicks {
-            min-height: 14px;
+            min-height: 17px;
 
             font-family: var(--mono);
-            font-size: 11px;
+            font-size: 14px;
             line-height: 1;
-            letter-spacing: .12em;
+            letter-spacing: .08em;
+            font-weight: 600;
 
             color: var(--foreground);
         }
@@ -2472,15 +2534,15 @@ const SUPABASE_ANON_KEY =
         }
 
         .message-personal-clicks {
-            margin-top: 5px;
+            margin-top: 6px;
 
             font-family: var(--mono);
-            font-size: 7px;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: .12em;
+            font-size: 10px;
+            line-height: 1.25;
+            letter-spacing: .04em;
+            font-weight: 500;
 
-            color: var(--muted);
+            color: var(--foreground);
             text-align: center;
 
             opacity: 0;
@@ -2525,6 +2587,123 @@ const SUPABASE_ANON_KEY =
             transform: translate(-50%, -50%) rotate(45deg);
         }
 
+        /* =========================================================
+           HEART CONFETTI
+           ========================================================= */
+
+        .message-confetti.heart {
+            width: 9px;
+            height: 9px;
+            border: 0;
+            background: transparent;
+            overflow: visible;
+        }
+
+        .message-confetti.heart::before {
+            content: "♡";
+
+            position: absolute;
+            left: 50%;
+            top: 50%;
+
+            font-family: Georgia, serif;
+            font-size: 10px;
+            line-height: 1;
+            font-weight: 700;
+
+            color: var(--background);
+            -webkit-text-stroke: 1px var(--foreground);
+
+            transform: translate(-50%, -50%);
+        }
+
+        /* =========================================================
+           SIGN THE REGISTRY BUTTON LETTER PARTICLES
+           ========================================================= */
+
+        .registry-submit-particle {
+            position: fixed;
+            z-index: 10000;
+
+            pointer-events: none;
+
+            font-family: var(--sans);
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 600;
+
+            color: var(--background);
+            -webkit-text-stroke: .5px var(--foreground);
+
+            text-transform: uppercase;
+            letter-spacing: .04em;
+
+            transform: translate(-50%, -50%);
+
+            animation:
+                registrySubmitParticleFall .9s cubic-bezier(.16,1,.3,1) forwards;
+        }
+
+        @keyframes registrySubmitParticleFall {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translate(0, -2px) rotate(0deg) scale(.75);
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translate(var(--particle-x), var(--particle-y)) rotate(var(--particle-rotate)) scale(.6);
+            }
+        }
+
+
+        /* =========================================================
+           HEADER BUTTON LETTER PARTICLES
+           ========================================================= */
+
+        .header-jump-particle {
+            position: fixed;
+            z-index: 10000;
+
+            pointer-events: none;
+
+            font-family: var(--sans);
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 600;
+
+            color: var(--background);
+            -webkit-text-stroke: .5px var(--foreground);
+
+            text-transform: uppercase;
+            letter-spacing: .04em;
+
+            transform: translate(-50%, -50%);
+
+            animation:
+                headerJumpParticleFall .9s cubic-bezier(.16,1,.3,1) forwards;
+        }
+
+        @keyframes headerJumpParticleFall {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translate(0, -2px) rotate(0deg) scale(.75);
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translate(var(--particle-x), var(--particle-y)) rotate(var(--particle-rotate)) scale(.6);
+            }
+        }
+
         @keyframes messageConfettiFloat {
             0% {
                 opacity: 1;
@@ -2542,7 +2721,17 @@ const SUPABASE_ANON_KEY =
             .message-click-wrap {
                 width: 40px;
                 height: 40px;
-                right: 0;
+
+                right:
+                    max(
+                        0px,
+                        calc(
+                            (100vw - min(
+                                calc(100vw - 20px),
+                                var(--max-width)
+                            )) / 4 - 20px
+                        )
+                    );
             }
 
             .message-click-button {
@@ -2558,8 +2747,10 @@ const SUPABASE_ANON_KEY =
             }
 
             .message-reaction-card {
-                min-width: 96px;
-                padding: 7px 9px 9px;
+                left: 50%;
+                right: auto;
+                min-width: 132px;
+                padding: 9px 12px 11px;
             }
 
             .message-heart {
@@ -3114,7 +3305,7 @@ const SUPABASE_ANON_KEY =
                 <div
                     class="message-thank-you"
                 >
-                    Thank you!
+                    Thank you for visiting the website!
                 </div>
 
                 <div
@@ -4860,6 +5051,100 @@ const SUPABASE_ANON_KEY =
 
 
         /* =========================================================
+           SIGN THE REGISTRY BUTTON LETTER PARTICLES
+           ========================================================= */
+
+        const registrySubmitButton =
+            document.getElementById(
+                "submitButton"
+            );
+
+
+        function createRegistrySubmitParticles() {
+
+            if (!registrySubmitButton) {
+                return;
+            }
+
+            const rect =
+                registrySubmitButton.getBoundingClientRect();
+
+            const label =
+                registrySubmitButton.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+            const letters =
+                label.replace(/[^A-Za-z]/g, "").slice(0, 16);
+
+            const pieces =
+                letters.length || 10;
+
+            for (
+                let index = 0;
+                index < pieces;
+                index += 1
+            ) {
+
+                const particle =
+                    document.createElement("span");
+
+                particle.className =
+                    "registry-submit-particle";
+
+                particle.textContent =
+                    letters[index] || "•";
+
+                particle.style.left =
+                    `${rect.left + rect.width / 2 + (Math.random() - .5) * rect.width}px`;
+
+                particle.style.top =
+                    `${rect.top + rect.height / 2}px`;
+
+                particle.style.setProperty(
+                    "--particle-x",
+                    `${(Math.random() - .5) * 100}px`
+                );
+
+                particle.style.setProperty(
+                    "--particle-y",
+                    `${26 + Math.random() * 42}px`
+                );
+
+                particle.style.setProperty(
+                    "--particle-rotate",
+                    `${-35 + Math.random() * 70}deg`
+                );
+
+                particle.style.animationDelay =
+                    `${index * 18}ms`;
+
+                document.body.appendChild(
+                    particle
+                );
+
+                setTimeout(
+                    () => {
+                        particle.remove();
+                    },
+                    1100
+                );
+            }
+        }
+
+
+        if (registrySubmitButton) {
+
+            registrySubmitButton.addEventListener(
+                "click",
+                () => {
+                    createRegistrySubmitParticles();
+                }
+            );
+        }
+
+
+        /* =========================================================
            CINEMATIC HEADER JUMP
            ========================================================= */
 
@@ -4867,6 +5152,83 @@ const SUPABASE_ANON_KEY =
             document.querySelector(
                 ".header-jump-button"
             );
+
+
+        /* =========================================================
+           HEADER BUTTON LETTER PARTICLES
+           ========================================================= */
+
+        function createHeaderJumpParticles() {
+
+            if (!headerJumpButton) {
+                return;
+            }
+
+            const rect =
+                headerJumpButton.getBoundingClientRect();
+
+            const label =
+                headerJumpButton.textContent
+                    .replace(/\s+/g, " ")
+                    .trim();
+
+            const letters =
+                label.replace(/[^A-Za-z]/g, "").slice(0, 16);
+
+            const pieces =
+                letters.length || 10;
+
+            for (
+                let index = 0;
+                index < pieces;
+                index += 1
+            ) {
+
+                const particle =
+                    document.createElement("span");
+
+                particle.className =
+                    "header-jump-particle";
+
+                particle.textContent =
+                    letters[index] || "•";
+
+                particle.style.left =
+                    `${rect.left + rect.width / 2 + (Math.random() - .5) * rect.width}px`;
+
+                particle.style.top =
+                    `${rect.top + rect.height / 2}px`;
+
+                particle.style.setProperty(
+                    "--particle-x",
+                    `${(Math.random() - .5) * 100}px`
+                );
+
+                particle.style.setProperty(
+                    "--particle-y",
+                    `${26 + Math.random() * 42}px`
+                );
+
+                particle.style.setProperty(
+                    "--particle-rotate",
+                    `${-35 + Math.random() * 70}deg`
+                );
+
+                particle.style.animationDelay =
+                    `${index * 18}ms`;
+
+                document.body.appendChild(
+                    particle
+                );
+
+                setTimeout(
+                    () => {
+                        particle.remove();
+                    },
+                    1100
+                );
+            }
+        }
 
 
         if (headerJumpButton) {
@@ -4887,6 +5249,8 @@ const SUPABASE_ANON_KEY =
                     if (!target) {
                         return;
                     }
+
+                    createHeaderJumpParticles();
 
 
                     target.scrollIntoView({
@@ -5033,6 +5397,136 @@ const SUPABASE_ANON_KEY =
             document.getElementById(
                 "messagePersonalClicks"
             );
+
+        function updateMessagePopupSide() {
+
+            if (!messageClickWrap) {
+                return;
+            }
+
+            messageClickWrap.classList.remove(
+                "popup-right"
+            );
+
+            const buttonRect =
+                messageClickButton.getBoundingClientRect();
+
+            const popup =
+                messageClickWrap.querySelector(
+                    ".message-reaction-card"
+                );
+
+            if (!popup) {
+                return;
+            }
+
+            const popupWidth =
+                popup.offsetWidth || 170;
+
+            const leftSideSpace =
+                buttonRect.left;
+
+            const rightSideSpace =
+                window.innerWidth - buttonRect.right;
+
+            const margin = 12;
+
+            if (
+                leftSideSpace < popupWidth + margin &&
+                rightSideSpace >= popupWidth + margin
+            ) {
+                messageClickWrap.classList.add(
+                    "popup-right"
+                );
+            }
+        }
+
+
+        window.addEventListener(
+            "resize",
+            updateMessagePopupSide
+        );
+
+
+
+        updateMessagePopupSide();
+
+
+        /* =========================================================
+           KEEP POPUP FULLY READABLE NEAR VIEWPORT EDGES
+           ========================================================= */
+
+        function updateMessagePopupVerticalPosition() {
+
+            if (!messageClickWrap || !messageClickButton) {
+                return;
+            }
+
+            const popup =
+                messageClickWrap.querySelector(
+                    ".message-reaction-card"
+                );
+
+            if (!popup) {
+                return;
+            }
+
+            const buttonRect =
+                messageClickButton.getBoundingClientRect();
+
+            const popupHeight =
+                popup.offsetHeight || 180;
+
+            const gap = 10;
+
+            const topPlacementTop =
+                buttonRect.top - gap - popupHeight;
+
+            const bottomPlacementBottom =
+                buttonRect.bottom + gap + popupHeight;
+
+            const topSafe =
+                topPlacementTop >= 8;
+
+            const bottomSafe =
+                bottomPlacementBottom <= window.innerHeight - 8;
+
+            if (topSafe) {
+
+                messageClickWrap.classList.remove(
+                    "popup-below"
+                );
+
+            }
+            else if (bottomSafe) {
+
+                messageClickWrap.classList.add(
+                    "popup-below"
+                );
+
+            }
+            else {
+
+                messageClickWrap.classList.remove(
+                    "popup-below"
+                );
+            }
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            updateMessagePopupVerticalPosition,
+            { passive: true }
+        );
+
+        window.addEventListener(
+            "resize",
+            updateMessagePopupVerticalPosition
+        );
+
+
+        updateMessagePopupVerticalPosition();
 
 
         const MESSAGE_DEVICE_ID_KEY =
@@ -5239,11 +5733,7 @@ const SUPABASE_ANON_KEY =
 
 
                 piece.className =
-                    `message-confetti ${
-                        index % 2 === 0
-                            ? "diamond"
-                            : "dot"
-                    }`;
+                    "message-confetti heart";
 
 
                 piece.style.left =
@@ -5317,6 +5807,10 @@ const SUPABASE_ANON_KEY =
 
             messageClickWrap.classList.add(
                 "reacted"
+            );
+
+            requestAnimationFrame(
+                updateMessagePopupVerticalPosition
             );
 
 
