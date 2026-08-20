@@ -2344,28 +2344,45 @@ const SUPABASE_ANON_KEY =
 
         .message-reaction-card {
             position: absolute;
-            right: 0;
-            bottom: calc(100% + 8px);
+
+            /*
+             * Center the popup in the open margin between the
+             * main content area and the browser scrollbar.
+             * This is calculated from the same max-width used by
+             * the page, so it remains centered across screen sizes.
+             */
+            right:
+                max(
+                    52px,
+                    calc(
+                        (100vw - min(
+                            calc(100vw - 32px),
+                            var(--max-width)
+                        )) / 4 - 56px
+                    )
+                );
+
+            bottom: calc(100% + 10px);
 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
 
-            min-width: 112px;
-            padding: 9px 12px 11px;
+            min-width: 142px;
+            padding: 11px 15px 13px;
 
             border: 1px solid var(--border);
-            background: rgba(250,249,246,.74);
+            background: rgba(250,249,246,.84);
 
             box-shadow:
-                3px 3px 0 rgba(115,115,115,.12);
+                4px 4px 0 rgba(115,115,115,.12);
 
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(6px);
 
             opacity: 0;
             transform: translateY(8px) scale(.94);
-            transform-origin: bottom right;
+            transform-origin: bottom center;
             pointer-events: none;
 
             transition:
@@ -2379,24 +2396,26 @@ const SUPABASE_ANON_KEY =
         }
 
         .message-total-label {
-            margin-bottom: 3px;
+            margin-bottom: 4px;
 
             font-family: var(--mono);
-            font-size: 7px;
-            line-height: 1;
+            font-size: 8px;
+            line-height: 1.1;
             text-transform: uppercase;
-            letter-spacing: .15em;
+            letter-spacing: .16em;
+            font-weight: 600;
 
-            color: var(--muted);
+            color: var(--foreground);
         }
 
         .message-total-clicks {
-            min-height: 14px;
+            min-height: 17px;
 
             font-family: var(--mono);
-            font-size: 11px;
+            font-size: 14px;
             line-height: 1;
-            letter-spacing: .12em;
+            letter-spacing: .08em;
+            font-weight: 600;
 
             color: var(--foreground);
         }
@@ -2472,15 +2491,15 @@ const SUPABASE_ANON_KEY =
         }
 
         .message-personal-clicks {
-            margin-top: 5px;
+            margin-top: 6px;
 
             font-family: var(--mono);
-            font-size: 7px;
-            line-height: 1.2;
-            text-transform: uppercase;
-            letter-spacing: .12em;
+            font-size: 10px;
+            line-height: 1.25;
+            letter-spacing: .04em;
+            font-weight: 500;
 
-            color: var(--muted);
+            color: var(--foreground);
             text-align: center;
 
             opacity: 0;
@@ -2558,8 +2577,9 @@ const SUPABASE_ANON_KEY =
             }
 
             .message-reaction-card {
-                min-width: 96px;
-                padding: 7px 9px 9px;
+                right: 38px;
+                min-width: 132px;
+                padding: 9px 12px 11px;
             }
 
             .message-heart {
