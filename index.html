@@ -2252,20 +2252,22 @@ const SUPABASE_ANON_KEY =
         .message-click-wrap {
             position: fixed;
 
-            right: 14px;
-            top: calc(20% + (var(--message-scroll-progress, 0) * 60%));
+            right: 0;
+            top: var(--message-scroll-thumb-center, 50vh);
 
             z-index: 9999;
 
+            width: 44px;
+            height: 44px;
+
             display: flex;
-            flex-direction: column;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
 
             transform: translateY(-50%);
 
             transition:
-                top .22s cubic-bezier(.16,1,.3,1);
+                top .08s linear;
 
             pointer-events: none;
         }
@@ -2341,6 +2343,10 @@ const SUPABASE_ANON_KEY =
         }
 
         .message-reaction-card {
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 8px);
+
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -2359,6 +2365,7 @@ const SUPABASE_ANON_KEY =
 
             opacity: 0;
             transform: translateY(8px) scale(.94);
+            transform-origin: bottom right;
             pointer-events: none;
 
             transition:
@@ -2533,9 +2540,9 @@ const SUPABASE_ANON_KEY =
         @media (max-width: 700px) {
 
             .message-click-wrap {
-                right: 8px;
-
-                top: calc(22% + (var(--message-scroll-progress, 0) * 56%));
+                width: 40px;
+                height: 40px;
+                right: 0;
             }
 
             .message-click-button {
@@ -4923,6 +4930,86 @@ const SUPABASE_ANON_KEY =
         /* =========================================================
            MESSAGE TO MEGA FLOATING CLICK FEATURE
            ========================================================= */
+
+        /*
+         * Keep the floating control visually attached to the browser
+         * scrollbar thumb rather than to a percentage of the page.
+         * The thumb position is calculated from the current scroll
+         * range and the viewport's scrollbar-thumb size.
+         */
+        function updateMessageScrollbarPosition() {
+
+            const documentHeight =
+                document.documentElement.scrollHeight;
+
+            const viewportHeight =
+                window.innerHeight;
+
+            const maxScroll =
+                Math.max(
+                    documentHeight - viewportHeight,
+                    0
+                );
+
+            if (maxScroll === 0) {
+
+                document.documentElement.style.setProperty(
+                    "--message-scroll-thumb-center",
+                    `${viewportHeight / 2}px`
+                );
+
+                return;
+            }
+
+            const scrollProgress =
+                Math.min(
+                    Math.max(
+                        window.scrollY / maxScroll,
+                        0
+                    ),
+                    1
+                );
+
+            const scrollbarThumbHeight =
+                Math.max(
+                    (viewportHeight * viewportHeight) / documentHeight,
+                    26
+                );
+
+            const availableTravel =
+                Math.max(
+                    viewportHeight - scrollbarThumbHeight,
+                    0
+                );
+
+            const thumbTop =
+                scrollProgress * availableTravel;
+
+            const thumbCenter =
+                thumbTop + scrollbarThumbHeight / 2;
+
+            document.documentElement.style.setProperty(
+                "--message-scroll-thumb-center",
+                `${thumbCenter}px`
+            );
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            updateMessageScrollbarPosition,
+            { passive: true }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            updateMessageScrollbarPosition
+        );
+
+
+        updateMessageScrollbarPosition();
+
 
         const messageClickWrap =
             document.getElementById(
