@@ -16,7 +16,7 @@
         const SITE = {
     title: "Visitor Log",
     name: "Megamann 81",
-    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯",
+    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯ pls say something nice ( ͠0 ͟ʖ ͡0)",
 
     subtitleNote:
         "Btw I didn't use a website editor for this, you can see all of the html in the git repository linked at the bottom of this page for proof, even though I did use ai for troubleshooting. I still own all of the rights though.",
@@ -2246,6 +2246,336 @@ const SUPABASE_ANON_KEY =
 
 
         /* =========================================================
+           MESSAGE TO MEGA FLOATING CLICK FEATURE
+           ========================================================= */
+
+        .message-click-wrap {
+            position: fixed;
+
+            right: 0;
+            top: var(--message-scroll-thumb-center, 50vh);
+
+            z-index: 9999;
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            transform: translateY(-50%);
+
+            transition:
+                top .08s linear;
+
+            pointer-events: none;
+        }
+
+        .message-click-button {
+            pointer-events: auto;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 44px;
+            height: 44px;
+
+            padding: 7px;
+
+            border: 1px solid var(--foreground);
+            background: rgba(250,249,246,.78);
+            color: var(--foreground);
+
+            cursor: pointer;
+
+            box-shadow:
+                3px 3px 0 rgba(115,115,115,.18);
+
+            backdrop-filter: blur(4px);
+
+            transition:
+                transform .25s cubic-bezier(.16,1,.3,1),
+                background .25s ease,
+                box-shadow .25s ease;
+        }
+
+        .message-click-button:hover {
+            transform: translate(-2px, -2px);
+
+            background: rgba(255,255,255,.92);
+
+            box-shadow:
+                5px 5px 0 var(--border);
+        }
+
+        .message-click-button:active {
+            transform: translate(1px, 1px);
+
+            box-shadow:
+                1px 1px 0 var(--border);
+        }
+
+        .message-click-button:disabled {
+            cursor: wait;
+            opacity: .78;
+        }
+
+        .message-heart-icon {
+            width: 25px;
+            height: 25px;
+
+            display: block;
+
+            fill: none;
+            stroke: var(--foreground);
+            stroke-width: 1.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+
+            transition:
+                transform .25s cubic-bezier(.16,1,.3,1);
+        }
+
+        .message-click-button:hover .message-heart-icon {
+            transform: scale(1.08);
+        }
+
+        .message-reaction-card {
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 8px);
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 112px;
+            padding: 9px 12px 11px;
+
+            border: 1px solid var(--border);
+            background: rgba(250,249,246,.74);
+
+            box-shadow:
+                3px 3px 0 rgba(115,115,115,.12);
+
+            backdrop-filter: blur(5px);
+
+            opacity: 0;
+            transform: translateY(8px) scale(.94);
+            transform-origin: bottom right;
+            pointer-events: none;
+
+            transition:
+                opacity .28s ease,
+                transform .28s cubic-bezier(.16,1,.3,1);
+        }
+
+        .message-click-wrap.reacted .message-reaction-card {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .message-total-label {
+            margin-bottom: 3px;
+
+            font-family: var(--mono);
+            font-size: 7px;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+
+            color: var(--muted);
+        }
+
+        .message-total-clicks {
+            min-height: 14px;
+
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1;
+            letter-spacing: .12em;
+
+            color: var(--foreground);
+        }
+
+        .message-heart {
+            margin: 6px 0 4px;
+
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .message-heart-icon-large {
+            width: 36px;
+            height: 36px;
+
+            display: block;
+
+            fill: none;
+            stroke: var(--foreground);
+            stroke-width: 1.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .message-click-wrap.reacted .message-heart-icon-large {
+            animation:
+                messageHeartPop .55s cubic-bezier(.16,1,.3,1) both;
+        }
+
+        @keyframes messageHeartPop {
+            0% {
+                transform: scale(.72);
+            }
+
+            45% {
+                transform: scale(1.16);
+            }
+
+            75% {
+                transform: scale(.96);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .message-thank-you {
+            margin-top: 1px;
+
+            font-family: var(--serif);
+            font-size: 12px;
+            font-style: italic;
+            line-height: 1.25;
+
+            color: var(--foreground);
+
+            opacity: 0;
+            transform: translateY(4px);
+
+            transition:
+                opacity .25s ease .08s,
+                transform .25s ease .08s;
+        }
+
+        .message-click-wrap.reacted .message-thank-you {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-personal-clicks {
+            margin-top: 5px;
+
+            font-family: var(--mono);
+            font-size: 7px;
+            line-height: 1.2;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+
+            color: var(--muted);
+            text-align: center;
+
+            opacity: 0;
+            transform: translateY(4px);
+
+            transition:
+                opacity .25s ease .13s,
+                transform .25s ease .13s;
+        }
+
+        .message-click-wrap.reacted .message-personal-clicks {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .message-confetti {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+
+            z-index: 10000;
+
+            width: 8px;
+            height: 8px;
+
+            border: 1px solid var(--foreground);
+            background: rgba(245,243,238,.35);
+
+            pointer-events: none;
+
+            transform: translate(-50%, -50%);
+
+            animation:
+                messageConfettiFloat .8s cubic-bezier(.16,1,.3,1) forwards;
+        }
+
+        .message-confetti.dot {
+            border-radius: 50%;
+        }
+
+        .message-confetti.diamond {
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        @keyframes messageConfettiFloat {
+            0% {
+                opacity: 1;
+                transform: translate(-50%, -50%) translate(0, 0) rotate(0deg) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) translate(var(--confetti-x), var(--confetti-y)) rotate(var(--confetti-rotate)) scale(.45);
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .message-click-wrap {
+                width: 40px;
+                height: 40px;
+                right: 0;
+            }
+
+            .message-click-button {
+                width: 40px;
+                height: 40px;
+
+                padding: 6px;
+            }
+
+            .message-heart-icon {
+                width: 22px;
+                height: 22px;
+            }
+
+            .message-reaction-card {
+                min-width: 96px;
+                padding: 7px 9px 9px;
+            }
+
+            .message-heart {
+                width: 32px;
+                height: 32px;
+            }
+
+            .message-heart-icon-large {
+                width: 31px;
+                height: 31px;
+            }
+        }
+
+
+
+        /* =========================================================
            REDUCED MOTION
            ========================================================= */
 
@@ -2743,6 +3073,78 @@ const SUPABASE_ANON_KEY =
             </div>
 
         </section>
+
+
+        <!-- =========================================================
+             MESSAGE TO MEGA FLOATING CLICK FEATURE
+             ========================================================= -->
+
+        <div
+            class="message-click-wrap"
+            id="messageClickWrap"
+            aria-live="polite"
+        >
+
+            <div class="message-reaction-card">
+
+                <div
+                    class="message-total-label"
+                >
+                    Total Clicks
+                </div>
+
+                <div
+                    class="message-total-clicks"
+                    id="messageTotalClicks"
+                >
+                    0
+                </div>
+
+                <div class="message-heart" aria-hidden="true">
+                    <svg
+                        class="message-heart-icon-large"
+                        viewBox="0 0 24 24"
+                    >
+                        <path
+                            d="M12 20.4s-7.4-4.4-9.2-8.3C1.5 9.3 2.7 6 6 5.3c2.1-.4 4.1.7 5.1 2.4.9-1.7 3-2.8 5.1-2.4 3.3.7 4.5 4 3.2 6.8C19.4 16 12 20.4 12 20.4Z"
+                        />
+                    </svg>
+                </div>
+
+                <div
+                    class="message-thank-you"
+                >
+                    Thank you!
+                </div>
+
+                <div
+                    class="message-personal-clicks"
+                    id="messagePersonalClicks"
+                >
+                    0 clicks by you
+                </div>
+
+            </div>
+
+            <button
+                class="message-click-button"
+                id="messageClickButton"
+                type="button"
+                aria-label="Click the heart"
+                title="Click the heart"
+            >
+                <svg
+                    class="message-heart-icon"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M12 20.4s-7.4-4.4-9.2-8.3C1.5 9.3 2.7 6 6 5.3c2.1-.4 4.1.7 5.1 2.4.9-1.7 3-2.8 5.1-2.4 3.3.7 4.5 4 3.2 6.8C19.4 16 12 20.4 12 20.4Z"
+                    />
+                </svg>
+            </button>
+
+        </div>
 
 
     </main>
@@ -4523,6 +4925,498 @@ const SUPABASE_ANON_KEY =
             );
 
         }
+
+
+        /* =========================================================
+           MESSAGE TO MEGA FLOATING CLICK FEATURE
+           ========================================================= */
+
+        /*
+         * Keep the floating control visually attached to the browser
+         * scrollbar thumb rather than to a percentage of the page.
+         * The thumb position is calculated from the current scroll
+         * range and the viewport's scrollbar-thumb size.
+         */
+        function updateMessageScrollbarPosition() {
+
+            const documentHeight =
+                document.documentElement.scrollHeight;
+
+            const viewportHeight =
+                window.innerHeight;
+
+            const maxScroll =
+                Math.max(
+                    documentHeight - viewportHeight,
+                    0
+                );
+
+            if (maxScroll === 0) {
+
+                document.documentElement.style.setProperty(
+                    "--message-scroll-thumb-center",
+                    `${viewportHeight / 2}px`
+                );
+
+                return;
+            }
+
+            const scrollProgress =
+                Math.min(
+                    Math.max(
+                        window.scrollY / maxScroll,
+                        0
+                    ),
+                    1
+                );
+
+            const scrollbarThumbHeight =
+                Math.max(
+                    (viewportHeight * viewportHeight) / documentHeight,
+                    26
+                );
+
+            const availableTravel =
+                Math.max(
+                    viewportHeight - scrollbarThumbHeight,
+                    0
+                );
+
+            const thumbTop =
+                scrollProgress * availableTravel;
+
+            const thumbCenter =
+                thumbTop + scrollbarThumbHeight / 2;
+
+            document.documentElement.style.setProperty(
+                "--message-scroll-thumb-center",
+                `${thumbCenter}px`
+            );
+        }
+
+
+        window.addEventListener(
+            "scroll",
+            updateMessageScrollbarPosition,
+            { passive: true }
+        );
+
+
+        window.addEventListener(
+            "resize",
+            updateMessageScrollbarPosition
+        );
+
+
+        updateMessageScrollbarPosition();
+
+
+        const messageClickWrap =
+            document.getElementById(
+                "messageClickWrap"
+            );
+
+
+        const messageClickButton =
+            document.getElementById(
+                "messageClickButton"
+            );
+
+
+        const messageTotalClicks =
+            document.getElementById(
+                "messageTotalClicks"
+            );
+
+
+        const messagePersonalClicks =
+            document.getElementById(
+                "messagePersonalClicks"
+            );
+
+
+        const MESSAGE_DEVICE_ID_KEY =
+            "message_to_mega_device_id";
+
+
+        const MESSAGE_PERSONAL_COUNT_KEY =
+            "message_to_mega_personal_clicks";
+
+
+        function messageLocalStorageAvailable() {
+
+            try {
+
+                const testKey =
+                    "__message_to_mega_storage_test";
+
+                localStorage.setItem(
+                    testKey,
+                    "1"
+                );
+
+                localStorage.removeItem(
+                    testKey
+                );
+
+                return true;
+
+            }
+            catch {
+
+                return false;
+            }
+        }
+
+
+        function getMessageDeviceId() {
+
+            try {
+
+                let deviceId =
+                    localStorage.getItem(
+                        MESSAGE_DEVICE_ID_KEY
+                    );
+
+
+                if (!deviceId) {
+
+                    deviceId =
+                        window.crypto &&
+                        typeof window.crypto.randomUUID === "function"
+                            ? window.crypto.randomUUID()
+                            : `device-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+                    localStorage.setItem(
+                        MESSAGE_DEVICE_ID_KEY,
+                        deviceId
+                    );
+                }
+
+
+                return deviceId;
+
+            }
+            catch {
+
+                return null;
+            }
+        }
+
+
+        function getPersonalMessageClickCount() {
+
+            try {
+
+                const value =
+                    Number(
+                        localStorage.getItem(
+                            MESSAGE_PERSONAL_COUNT_KEY
+                        ) ||
+                        "0"
+                    );
+
+
+                return Number.isFinite(value)
+                    ? value
+                    : 0;
+
+            }
+            catch {
+
+                return 0;
+            }
+        }
+
+
+        function setPersonalMessageClickCount(count) {
+
+            try {
+
+                localStorage.setItem(
+                    MESSAGE_PERSONAL_COUNT_KEY,
+                    String(count)
+                );
+
+            }
+            catch {
+                // Local browser storage may be unavailable.
+            }
+        }
+
+
+        function updatePersonalMessageClickDisplay() {
+
+            if (
+                !messageLocalStorageAvailable() ||
+                !getMessageDeviceId()
+            ) {
+
+                messagePersonalClicks.style.display =
+                    "none";
+
+                return;
+            }
+
+
+            messagePersonalClicks.style.display =
+                "block";
+
+
+            const count =
+                getPersonalMessageClickCount();
+
+
+            messagePersonalClicks.textContent =
+                `${count} ${count === 1 ? "click" : "clicks"} by you`;
+        }
+
+
+        async function loadMessageTotalClicks() {
+
+            if (!db) {
+                return;
+            }
+
+
+            try {
+
+                const {
+                    data,
+                    error
+                } = await db.rpc(
+                    "get_message_to_mega_clicks"
+                );
+
+
+                if (error) {
+                    throw error;
+                }
+
+
+                const total =
+                    Number(data ?? 0);
+
+
+                if (Number.isFinite(total)) {
+
+                    messageTotalClicks.textContent =
+                        total.toLocaleString();
+                }
+
+            }
+            catch (error) {
+
+                console.debug(
+                    "Could not load Message to Mega click total:",
+                    error
+                );
+            }
+        }
+
+
+        function createMessageConfetti() {
+
+            const rect =
+                messageClickButton.getBoundingClientRect();
+
+
+            const originX =
+                rect.left + rect.width / 2;
+
+
+            const originY =
+                rect.top + rect.height / 2;
+
+
+            const pieces = 18;
+
+
+            for (let index = 0; index < pieces; index += 1) {
+
+                const piece =
+                    document.createElement("span");
+
+
+                piece.className =
+                    `message-confetti ${
+                        index % 2 === 0
+                            ? "diamond"
+                            : "dot"
+                    }`;
+
+
+                piece.style.left =
+                    `${originX}px`;
+
+
+                piece.style.top =
+                    `${originY}px`;
+
+
+                const angle =
+                    (Math.PI * 2 * index) / pieces;
+
+
+                const distance =
+                    26 + Math.random() * 34;
+
+
+                piece.style.setProperty(
+                    "--confetti-x",
+                    `${Math.cos(angle) * distance}px`
+                );
+
+
+                piece.style.setProperty(
+                    "--confetti-y",
+                    `${Math.sin(angle) * distance}px`
+                );
+
+
+                piece.style.setProperty(
+                    "--confetti-rotate",
+                    `${-80 + Math.random() * 160}deg`
+                );
+
+
+                piece.style.animationDelay =
+                    `${Math.random() * 70}ms`;
+
+
+                document.body.appendChild(
+                    piece
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        piece.remove();
+
+                    },
+                    1000
+                );
+            }
+        }
+
+
+        async function handleMessageClick() {
+
+            if (
+                !messageClickButton ||
+                messageClickButton.disabled
+            ) {
+                return;
+            }
+
+
+            messageClickButton.disabled =
+                true;
+
+
+            messageClickWrap.classList.add(
+                "reacted"
+            );
+
+
+            if (
+                messageLocalStorageAvailable() &&
+                getMessageDeviceId()
+            ) {
+
+                const personalCount =
+                    getPersonalMessageClickCount() + 1;
+
+
+                setPersonalMessageClickCount(
+                    personalCount
+                );
+
+
+                updatePersonalMessageClickDisplay();
+            }
+
+
+            createMessageConfetti();
+
+
+            if (db) {
+
+                try {
+
+                    const {
+                        data,
+                        error
+                    } = await db.rpc(
+                        "increment_message_to_mega_click"
+                    );
+
+
+                    if (error) {
+                        throw error;
+                    }
+
+
+                    const total =
+                        Number(data ?? 0);
+
+
+                    if (Number.isFinite(total)) {
+
+                        messageTotalClicks.textContent =
+                            total.toLocaleString();
+
+                    }
+                    else {
+
+                        await loadMessageTotalClicks();
+                    }
+
+                }
+                catch (error) {
+
+                    console.error(
+                        "Could not save Message to Mega click:",
+                        error
+                    );
+
+                    messageTotalClicks.textContent =
+                        "Unable to update";
+                }
+            }
+            else {
+
+                messageTotalClicks.textContent =
+                    "Database unavailable";
+            }
+
+
+            setTimeout(
+                () => {
+
+                    messageClickButton.disabled =
+                        false;
+
+                },
+                350
+            );
+        }
+
+
+        if (messageClickButton) {
+
+            messageClickButton.addEventListener(
+                "click",
+                handleMessageClick
+            );
+        }
+
+
+        updatePersonalMessageClickDisplay();
+
+        loadMessageTotalClicks();
+
 
 
         /* =========================================================
