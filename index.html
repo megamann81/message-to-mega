@@ -16,7 +16,7 @@
         const SITE = {
     title: "Visitor Log",
     name: "Megamann 81",
-    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯,
+    subtitle: "Leave a message, say hello, or let future visitors know you were here ╰(*°▽°*)╯",
 
     subtitleNote:
         "Btw I didn't use a website editor for this, you can see all of the html in the git repository linked at the bottom of this page for proof, even though I did use ai for troubleshooting. I still own all of the rights though.",
@@ -2819,13 +2819,29 @@ const SUPABASE_ANON_KEY =
             );
 
 
-        const db =
-            SUPABASE_READY
-                ? window.supabase.createClient(
-                    SUPABASE_URL,
-                    SUPABASE_ANON_KEY
-                )
-                : null;
+        let db = null;
+
+
+        try {
+
+            if (SUPABASE_READY) {
+
+                db =
+                    window.supabase.createClient(
+                        SUPABASE_URL,
+                        SUPABASE_ANON_KEY
+                    );
+            }
+
+        }
+        catch (error) {
+
+            console.error(
+                "Supabase initialization failed:",
+                error
+            );
+
+        }
 
 
         /* =========================================================
