@@ -15,12 +15,6 @@ The site uses a custom editorial-style design with:
 - Animated section reveals and interactive hover states
 - Responsive mobile styling
 
-## Project
-
-**Website:** Message to Mega  
-**GitHub:** https://github.com/megamann81/message-to-mega  
-**GitHub user:** `@megamann81`
-
 ## Main Features
 
 ### Visitor messages
