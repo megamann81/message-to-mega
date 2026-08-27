@@ -1857,6 +1857,217 @@ const SUPABASE_ANON_KEY =
 
 
         /* =========================================================
+           PLAYLIST SUGGESTIONS + CONTACT
+           ========================================================= */
+
+        #playlist,
+        #playlistSuggest,
+        #github,
+        #contact {
+            scroll-margin-top: 28px;
+        }
+
+        .playlist-suggest-card {
+            margin-top: 22px;
+            padding: 24px;
+            border: 2px solid var(--foreground);
+            background: var(--pinned-surface);
+            box-shadow: 5px 5px 0 var(--border);
+        }
+
+        .playlist-suggest-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            font-family: var(--serif);
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .playlist-suggest-mark {
+            font-family: var(--mono);
+            font-size: 16px;
+        }
+
+        .playlist-suggest-description {
+            margin: 10px 0 18px;
+            color: var(--muted);
+            font-family: var(--serif);
+            font-style: italic;
+            line-height: 1.65;
+        }
+
+        .playlist-suggest-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-family: var(--mono);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .15em;
+            color: var(--muted);
+        }
+
+        .playlist-suggest-form textarea {
+            width: 100%;
+            min-height: 110px;
+            resize: vertical;
+            padding: 14px;
+            border: 1px solid var(--foreground);
+            border-radius: 0;
+            background: var(--surface);
+            color: var(--foreground);
+            font: inherit;
+            line-height: 1.55;
+            outline: none;
+        }
+
+        .playlist-suggest-form textarea:focus {
+            box-shadow: 3px 3px 0 var(--muted-light);
+        }
+
+        .playlist-suggest-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 14px;
+        }
+
+        .playlist-suggest-status {
+            min-height: 1.3em;
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        .playlist-suggest-button {
+            border: 1px solid var(--foreground);
+            border-radius: 0;
+            padding: 11px 15px;
+            background: var(--foreground);
+            color: var(--background);
+            font-family: var(--sans);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .13em;
+            cursor: pointer;
+            transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease;
+        }
+
+        .playlist-suggest-button:hover {
+            transform: translate(-2px,-2px);
+            box-shadow: 4px 4px 0 var(--muted);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .contact-widget {
+            position: relative;
+            display: block;
+            min-height: 170px;
+            padding: 24px;
+            border: 2px solid var(--foreground);
+            background: var(--surface);
+            color: var(--foreground);
+            text-decoration: none;
+            box-shadow: 5px 5px 0 var(--border);
+            transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease;
+        }
+
+        .contact-widget:hover {
+            transform: translate(-3px,-3px);
+            box-shadow: 8px 8px 0 var(--muted-light);
+        }
+
+        .contact-widget-label {
+            font-family: var(--mono);
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            color: var(--muted);
+        }
+
+        .contact-widget-value {
+            margin-top: 18px;
+            font-family: var(--serif);
+            font-size: clamp(20px, 2vw, 28px);
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .contact-widget-action {
+            position: absolute;
+            left: 24px;
+            bottom: 22px;
+            font-family: var(--sans);
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .13em;
+        }
+
+        .contact-discord {
+            overflow: hidden;
+            background: #5865f2;
+            border-color: #404eed;
+            color: #ffffff;
+            box-shadow: 5px 5px 0 #2d3a96;
+        }
+
+        .contact-discord .contact-widget-label {
+            color: rgba(255,255,255,.72);
+        }
+
+        .contact-discord:hover {
+            box-shadow: 8px 8px 0 #2d3a96;
+        }
+
+        .discord-accent {
+            position: absolute;
+            top: 20px;
+            right: 22px;
+            width: 34px;
+            height: 34px;
+            opacity: .88;
+        }
+
+        .discord-accent svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 700px) {
+            .playlist-suggest-card {
+                padding: 18px;
+            }
+
+            .playlist-suggest-footer,
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .playlist-suggest-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .playlist-suggest-button {
+                width: 100%;
+            }
+
+            .contact-grid {
+                display: grid;
+            }
+        }
+
+
+        /* =========================================================
            FOOTER
            ========================================================= */
 
@@ -2242,6 +2453,86 @@ const SUPABASE_ANON_KEY =
                 letter-spacing:
                     .22em;
             }
+        }
+
+
+        /* =========================================================
+           PLAYLIST SUGGESTION FORM
+           ========================================================= */
+
+        const playlistSuggestForm =
+            document.getElementById(
+                "playlistSuggestForm"
+            );
+
+        const playlistSuggestion =
+            document.getElementById(
+                "playlistSuggestion"
+            );
+
+        const playlistSuggestStatus =
+            document.getElementById(
+                "playlistSuggestStatus"
+            );
+
+
+        if (playlistSuggestForm) {
+
+            playlistSuggestForm.addEventListener(
+                "submit",
+                async event => {
+
+                    event.preventDefault();
+
+                    const suggestion =
+                        playlistSuggestion.value.trim();
+
+                    if (!suggestion) {
+                        return;
+                    }
+
+                    playlistSuggestStatus.textContent =
+                        "Sending...";
+
+                    try {
+
+                        if (!db) {
+                            throw new Error(
+                                "Database unavailable"
+                            );
+                        }
+
+                        const { error } =
+                            await db
+                                .from(
+                                    "playlist_suggestions"
+                                )
+                                .insert({
+                                    suggestion
+                                });
+
+                        if (error) {
+                            throw error;
+                        }
+
+                        playlistSuggestForm.reset();
+
+                        playlistSuggestStatus.textContent =
+                            "Suggestion sent. Thank you!";
+
+                    }
+                    catch (error) {
+
+                        console.error(
+                            "Playlist suggestion failed:",
+                            error
+                        );
+
+                        playlistSuggestStatus.textContent =
+                            "Couldn't send that right now.";
+                    }
+                }
+            );
         }
 
 
@@ -3063,36 +3354,28 @@ const SUPABASE_ANON_KEY =
             Page Index
         </div>
 
-        <button
-            class="desktop-side-nav-button"
-            type="button"
-            data-scroll-target="sign"
-        >
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="sign">
             Leave a Message
         </button>
 
-        <button
-            class="desktop-side-nav-button"
-            type="button"
-            data-scroll-target="visitors"
-        >
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="visitors">
             Recent Visitors
         </button>
 
-        <button
-            class="desktop-side-nav-button"
-            type="button"
-            data-scroll-target="github"
-        >
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="playlist">
+            Spotify
+        </button>
+
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="playlistSuggest">
+            Suggest an Edit
+        </button>
+
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="github">
             Git Repository
         </button>
 
-        <button
-            class="desktop-side-nav-button"
-            type="button"
-            data-scroll-target="playlist"
-        >
-            Music
+        <button class="desktop-side-nav-button" type="button" data-scroll-target="contact">
+            Contact Me
         </button>
     </nav>
 
@@ -3341,6 +3624,97 @@ const SUPABASE_ANON_KEY =
         </section>
 
 
+
+
+
+        <!-- =========================================================
+             PLAYLIST
+             ========================================================= -->
+
+        <section id="playlist" class="spotify-section">
+
+            <div class="container">
+
+                <div class="section-label-row">
+                    <div class="line"></div>
+                    <span class="section-label">
+                        04 · Spotify
+                    </span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-intro">
+                    <h2 class="section-title">
+                        Music I Think You Might Want To Listen To
+                    </h2>
+
+                    <p class="section-description">
+                        The playlist I have been listening to lately.
+                    </p>
+                </div>
+
+                <div class="spotify-card">
+                    <iframe
+                        title="Music I Think You Might Want To Listen To on Spotify"
+                        src="https://open.spotify.com/embed/playlist/1GyO6nP3wzOf9Yfyoggp5E?utm_source=generator"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                    ></iframe>
+                </div>
+
+
+                <div
+                    class="playlist-suggest-card"
+                    id="playlistSuggest"
+                >
+                    <div class="playlist-suggest-heading">
+                        <span>Suggest an Edit</span>
+                        <span class="playlist-suggest-mark">↗</span>
+                    </div>
+
+                    <p class="playlist-suggest-description">
+                        Think something belongs on the playlist, should be removed,
+                        or have another idea? Send it here.
+                    </p>
+
+                    <form
+                        class="playlist-suggest-form"
+                        id="playlistSuggestForm"
+                    >
+                        <label for="playlistSuggestion">
+                            Your suggestion
+                        </label>
+
+                        <textarea
+                            id="playlistSuggestion"
+                            name="playlistSuggestion"
+                            maxlength="500"
+                            placeholder="Add, remove, change, or suggest something..."
+                            required
+                        ></textarea>
+
+                        <div class="playlist-suggest-footer">
+                            <span
+                                class="playlist-suggest-status"
+                                id="playlistSuggestStatus"
+                                aria-live="polite"
+                            ></span>
+
+                            <button
+                                class="playlist-suggest-button"
+                                type="submit"
+                            >
+                                Send Suggestion →
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </section>
+
+
         <!-- =========================================================
              GITHUB REPOSITORY
              ========================================================= -->
@@ -3354,7 +3728,7 @@ const SUPABASE_ANON_KEY =
                     <div class="line"></div>
 
                     <span class="section-label">
-                        04 · Git Repository
+                        05 · Git Repository
                     </span>
 
                     <div class="line"></div>
@@ -3496,7 +3870,88 @@ const SUPABASE_ANON_KEY =
         </section>
 
 
+        
         <!-- =========================================================
+             CONTACT
+             ========================================================= -->
+
+        <section id="contact">
+
+            <div class="container">
+
+                <div class="section-label-row">
+                    <div class="line"></div>
+                    <span class="section-label">
+                        06 · Contact
+                    </span>
+                    <div class="line"></div>
+                </div>
+
+                <div class="section-intro">
+                    <h2 class="section-title">
+                        Contact Me
+                    </h2>
+
+                    <p class="section-description">
+                        If you want to reach me, these are the easiest places.
+                    </p>
+                </div>
+
+                <div class="contact-grid">
+
+                    <a
+                        class="contact-widget contact-email"
+                        href="mailto:luke.ib.bronson@gmail.com"
+                    >
+                        <div class="contact-widget-label">
+                            Email
+                        </div>
+
+                        <div class="contact-widget-value">
+                            luke.ib.bronson@gmail.com
+                        </div>
+
+                        <div class="contact-widget-action">
+                            Open Mail →
+                        </div>
+                    </a>
+
+                    <div
+                        class="contact-widget contact-discord"
+                    >
+                        <div class="discord-accent">
+                            <svg
+                                viewBox="0 0 24 24"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    fill="currentColor"
+                                    d="M19.54 4.91A16.4 16.4 0 0 0 15.45 3.6l-.5 1.02a15.1 15.1 0 0 0-5.9 0l-.5-1.02a16.5 16.5 0 0 0-4.1 1.31C1.86 8.78 1.16 12.56 1.5 16.29a16.5 16.5 0 0 0 5.02 2.53l1.22-1.66a9.6 9.6 0 0 1-1.92-.92l.46-.36c3.7 1.72 7.72 1.72 11.38 0l.46.36c-.61.36-1.25.67-1.92.92l1.22 1.66a16.5 16.5 0 0 0 5.02-2.53c.4-4.33-.68-8.08-2.92-11.38ZM8.68 14.05c-1.1 0-2-.99-2-2.21 0-1.22.88-2.21 2-2.21 1.12 0 2.02.99 2 2.21 0 1.22-.88 2.21-2 2.21Zm6.64 0c-1.1 0-2-.99-2-2.21 0-1.22.88-2.21 2-2.21 1.12 0 2.02.99 2 2.21 0 1.22-.88 2.21-2 2.21Z"
+                                />
+                            </svg>
+                        </div>
+
+                        <div class="contact-widget-label">
+                            Discord
+                        </div>
+
+                        <div class="contact-widget-value">
+                            megamann81
+                        </div>
+
+                        <div class="contact-widget-action">
+                            Add me on Discord
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+<!-- =========================================================
              MESSAGE TO MEGA FLOATING CLICK FEATURE
              ========================================================= -->
 
@@ -3566,49 +4021,6 @@ const SUPABASE_ANON_KEY =
             </button>
 
         </div>
-
-
-
-
-        <!-- =========================================================
-             PLAYLIST
-             ========================================================= -->
-
-        <section id="playlist" class="spotify-section">
-
-            <div class="container">
-
-                <div class="section-label-row">
-                    <div class="line"></div>
-                    <span class="section-label">
-                        04 · Listening
-                    </span>
-                    <div class="line"></div>
-                </div>
-
-                <div class="section-intro">
-                    <h2 class="section-title">
-                        Music I Think You Might Want To Listen To
-                    </h2>
-
-                    <p class="section-description">
-                        The playlist I have been listening to lately.
-                    </p>
-                </div>
-
-                <div class="spotify-card">
-                    <iframe
-                        title="Music I Think You Might Want To Listen To on Spotify"
-                        src="https://open.spotify.com/embed/playlist/1GyO6nP3wzOf9Yfyoggp5E?utm_source=generator"
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                        loading="lazy"
-                    ></iframe>
-                </div>
-
-            </div>
-
-        </section>
-
 
     </main>
 
