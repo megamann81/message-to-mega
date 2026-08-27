@@ -182,20 +182,6 @@ submission_rejected
 
 Analytics failures are intentionally non-blocking so that an analytics problem does not prevent the visitor form from working.
 
-## GitHub widget
-
-The page contains a themed repository card linking to:
-
-https://github.com/megamann81/message-to-mega
-
-It is styled to match the rest of the site and includes a clearly visible:
-
-```text
-View the Repository →
-```
-
-button.
-
 ## Website structure
 
 The main page is organized into three numbered sections:
