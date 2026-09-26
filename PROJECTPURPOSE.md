@@ -1,5 +1,5 @@
 ## *Message to Mega Project Purpose*
->This markdown file was made to explain this projects purpose for the Stardance Challenge project
+>This markdown file was made by megamann81 to explain this projects purpose for the Stardance Challenge project
 
   Message to Mega was created as a means for people to send messages to me without any judgment and to claim a spot in the registry, like historic visitor websites people have made in the past. People on the website can post a message of their own, use their own username, see other people's messages, and give suggestions on the website. The website features responsive mobile styling that adapts to mobile browsers. The backend for the project is located at
 ```text
