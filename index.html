@@ -3732,18 +3732,21 @@ const SUPABASE_ANON_KEY =
                     id="playlistSuggest"
                 >
                     <div class="playlist-suggest-heading">
-                        <span>Suggest an Edit</span>
+                        <span>Suggest an Edit to the Website</span>
                         
                     </div>
 
                     <p class="playlist-suggest-description">
-                        Think something belongs on the playlist, should be removed,
+                        Think something belongs on the website, the playlist,
                         or have another idea? Send it here.
                     </p>
 
                     <form
                         class="playlist-suggest-form"
                         id="playlistSuggestForm"
+                        method="post"
+                        action="#"
+                        novalidate
                     >
                         <label for="playlistSuggestion">
                             Your suggestion
